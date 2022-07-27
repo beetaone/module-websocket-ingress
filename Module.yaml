@@ -1,0 +1,31 @@
+displayName: 'Websocket Ingress'       # Display name for the module that will be displayed in the UI.
+moduleName: 'websocket-ingress'        # Module name that will be used to reference the module, and uniquely identify the module and their versions.
+description: 'The module should connect to Websocket endpoint and listen for incoming messages. Then forward the payload to next module in weeve appropriate JSON format.'       # Module description that will be displayed in the UI.
+versionName: 'v1.0.0'                    # Module version name that will be used to reference the module version, and uniquely identify the module version with a common name.
+isPublic: true                          # Boolean value that indicates if the module is Public or Private.
+categories:                             # Array of category that will be used to group the module in the UI.
+  - 'Websocket'
+type: 'Input'      # Module type (Input, Processing, Output) that will be used to group the module in the UI.
+image:
+  name: 'weevenetwork/websocket-ingress'     # Image name from the docker registry.
+  tag: 'v1.0.0'                               # Image tag from the docker registry.
+  homepage: 'https://hub.docker.com/weevenetwork/websocket-ingress'      # Image homepage from the docker registry.
+repository: 'https://github.com/weeve-modules/websocket-ingress'     # Repository URL to source code.
+envs:                                   # Array of environment variables that will be used to configure the module. Also used to show related fields on the UI.
+  - name: Websocket URL
+    key: WEBSOCKET_URL
+    description: URL for websocket
+    value: ''
+    type: 'text'
+ports:                                  # Array of ports that will be exposed by the module.
+  - container: 8080                     # Port number from the container.
+    host: 8080                          # Port number to map on the host.
+mounts:
+  - container: '/data'                  # Mount path from the container.
+    host: '/data'                       # Mount path to map on the host.
+tags:                                   # Array of tags.
+  - 'NodeJS'
+  - 'Input'
+  - 'Websocket'
+  - 'Boilerplate 1.0.0'
+icon: 'https://icons-020-demo.s3.eu-central-1.amazonaws.com/mi_websocket_input.png'    # Icon URL that will be displayed in the UI.

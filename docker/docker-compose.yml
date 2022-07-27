@@ -1,0 +1,15 @@
+version: "3.0"
+services:
+  websocket-ingress:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+    environment:
+      MODULE_NAME: "Websocket Ingress"
+      MODULE_TYPE: "Input"
+      EGRESS_URLS: "https://testdockercompose.free.beeceptor.com"
+      INGRESS_HOST: "0.0.0.0"
+      INGRESS_PORT: "80"
+      WEBSOCKET_URL: ''
+    ports:
+      - 80:80
