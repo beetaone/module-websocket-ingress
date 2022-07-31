@@ -9,12 +9,26 @@ const initializeListener = async () => {
       data,
     }
     if (EGRESS_URLS) {
-      fetch(EGRESS_URLS, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
+      const urls = []
+      const eUrls = EGRESS_URLS.replace(/ /g, '')
+      if (eUrls.indexOf(',') !== -1) {
+        urls.push(...eUrls.split(','))
+      } else {
+        urls.push(eUrls)
+      }
+      urls.forEach(async url => {
+        if (url) {
+          const callRes = await fetch(url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+          })
+          if (!callRes.ok) {
+            console.error(`Error passing response data to ${url}`)
+          }
+        }
       })
     } else {
       console.log(JSON.stringify(payload))

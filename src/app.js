@@ -3,7 +3,6 @@ const express = require('express')
 const app = express()
 const winston = require('winston')
 const expressWinston = require('express-winston')
-const { formatTimeDiff } = require('./utils/util')
 const { initializeListener } = require('./utils/websocket')
 // initialization
 app.use(express.urlencoded({ extended: true }))
@@ -30,15 +29,6 @@ app.use(
     }, // optional: allows to skip some log messages based on request and/or response
   })
 )
-const startTime = Date.now()
-// health check
-app.get('/health', async (req, res) => {
-  res.json({
-    serverStatus: 'Running',
-    uptime: formatTimeDiff(Date.now(), startTime),
-    module: MODULE_NAME,
-  })
-})
 // main post listener
 app.post('/', async (req, res) => {
   initializeListener()
