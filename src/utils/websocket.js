@@ -9,13 +9,8 @@ const initializeListener = async () => {
       data,
     }
     if (EGRESS_URLS) {
-      const urls = []
       const eUrls = EGRESS_URLS.replace(/ /g, '')
-      if (eUrls.indexOf(',') !== -1) {
-        urls.push(...eUrls.split(','))
-      } else {
-        urls.push(eUrls)
-      }
+      const urls = eUrls.split(',')
       urls.forEach(async url => {
         if (url) {
           try {
