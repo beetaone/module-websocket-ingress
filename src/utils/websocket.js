@@ -18,15 +18,19 @@ const initializeListener = async () => {
       }
       urls.forEach(async url => {
         if (url) {
-          const callRes = await fetch(url, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload),
-          })
-          if (!callRes.ok) {
-            console.error(`Error passing response data to ${url}`)
+          try {
+            const callRes = await fetch(url, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(payload),
+            })
+            if (!callRes.ok) {
+              console.error(`Error passing response data to ${url}, status: ${callRes.status}`)
+            }
+          } catch (e) {
+            console.error(`Error making request to: ${url}, error: ${e.message}`)
           }
         }
       })
