@@ -30,7 +30,7 @@ const initializeListener = async () => {
         }
       })
     } else {
-      console.log(JSON.stringify(payload))
+      console.error('EGRESS_URLS is not provided.')
     }
   })
   client.on('open', () => {
