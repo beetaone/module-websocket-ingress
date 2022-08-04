@@ -35,6 +35,56 @@ The module should connect to Websocket endpoint and listen for incoming messages
 | INGRESS_HOST          | string | Host where app is running |
 | INGRESS_PORT          | string | Port where app is running |
 
+## Incoming payload can look like this
+
+```js
+
+{
+   "cmd": "rx",
+   "seqno": 2091,
+   "EUI": "24E124538B444729",
+   "ts": 1658752736930,
+   "fcnt": 847,
+   "port": 85,
+   "freq": 868500000,
+   "rssi": -17,
+   "snr": 8,
+   "toa": 56,
+   "dr": "SF7 BW125 4/5",
+   "ack": false,
+   "bat": 254,
+   "offline": false,
+   "data": "017564030001040001"
+}	
+
+```
+## Outgoing payload looks like this
+
+```js
+
+{
+  "timestamp":1659608431851,
+  "data":{
+    "cmd": "rx",
+    "seqno": 2091,
+    "EUI": "24E124538B444729",
+    "ts": 1658752736930,
+    "fcnt": 847,
+    "port": 85,
+    "freq": 868500000,
+    "rssi": -17,
+    "snr": 8,
+    "toa": 56,
+    "dr": "SF7 BW125 4/5",
+    "ack": false,
+    "bat": 254,
+    "offline": false,
+    "data": "017564030001040001"
+  }
+}	
+
+```
+
 ## Dependencies
 
 ```js
