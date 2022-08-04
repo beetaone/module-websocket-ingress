@@ -42,7 +42,7 @@ The module should connect to Websocket endpoint and listen for incoming messages
 {
    "cmd": "rx",
    "seqno": 2091,
-   "EUI": "24E124538B444729",
+   "EUI": "24DD24538B444729",
    "ts": 1658752736930,
    "fcnt": 847,
    "port": 85,
@@ -54,7 +54,7 @@ The module should connect to Websocket endpoint and listen for incoming messages
    "ack": false,
    "bat": 254,
    "offline": false,
-   "data": "017564030001040001"
+   "data": "017564030001045555"
 }	
 
 ```
@@ -67,7 +67,7 @@ The module should connect to Websocket endpoint and listen for incoming messages
   "data":{
     "cmd": "rx",
     "seqno": 2091,
-    "EUI": "24E124538B444729",
+    "EUI": "24DD24538B444729",
     "ts": 1658752736930,
     "fcnt": 847,
     "port": 85,
@@ -79,7 +79,7 @@ The module should connect to Websocket endpoint and listen for incoming messages
     "ack": false,
     "bat": 254,
     "offline": false,
-    "data": "017564030001040001"
+    "data": "017564030001045555"
   }
 }	
 
