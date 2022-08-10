@@ -29,12 +29,6 @@ app.use(
     }, // optional: allows to skip some log messages based on request and/or response
   })
 )
-// main post listener
-app.post('/', async (req, res) => {
-  initializeListener()
-  res.status(200).send({ message: 'Websocket listener initialized' })
-})
-
 // handle exceptions
 app.use(async (err, req, res, next) => {
   if (res.headersSent) {
@@ -50,5 +44,6 @@ app.use(async (err, req, res, next) => {
 if (require.main === module) {
   app.listen(INGRESS_PORT, INGRESS_HOST, () => {
     console.log(`${MODULE_NAME} listening on ${INGRESS_PORT}`)
+    initializeListener()
   })
 }
