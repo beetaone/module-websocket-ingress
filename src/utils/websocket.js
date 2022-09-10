@@ -4,6 +4,7 @@ const { EGRESS_URLS, WEBSOCKET_URL } = require('../config/config.js')
 const initializeListener = async () => {
   const client = new WebSocket(WEBSOCKET_URL)
   client.on('message', function message(data) {
+    console.log(`Received data: ${data}`)
     const payload = {
       timestamp: Date.now(),
       data,
@@ -14,6 +15,7 @@ const initializeListener = async () => {
       urls.forEach(async url => {
         if (url) {
           try {
+            console.log(`Sending data to ${url}`)
             const callRes = await fetch(url, {
               method: 'POST',
               headers: {
@@ -23,6 +25,8 @@ const initializeListener = async () => {
             })
             if (!callRes.ok) {
               console.error(`Error passing response data to ${url}, status: ${callRes.status}`)
+            } else {
+              console.log(`Data sent successfully.`)
             }
           } catch (e) {
             console.error(`Error making request to: ${url}, error: ${e.message}`)
