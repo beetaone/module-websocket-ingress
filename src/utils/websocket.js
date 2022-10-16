@@ -5,9 +5,15 @@ const initializeListener = async () => {
   const client = new WebSocket(WEBSOCKET_URL)
   client.on('message', function message(data) {
     console.log(`Received data: ${data}`)
+    var decodedData = data
+    try {
+      decodedData = JSON.parse(data.toString())
+    } catch (SyntaxError) {
+      decodedData = data.toString()
+    }
     const payload = {
       timestamp: Date.now(),
-      data,
+      data: decodedData,
     }
     if (EGRESS_URLS) {
       const eUrls = EGRESS_URLS.replace(/ /g, '')
