@@ -5,7 +5,7 @@ const initializeListener = async () => {
   const client = new WebSocket(WEBSOCKET_URL)
   client.on('message', function message(data) {
     console.log(`Received data: ${data}`)
-    var decodedData = data
+    let decodedData = data
     try {
       decodedData = JSON.parse(data.toString())
     } catch (SyntaxError) {
