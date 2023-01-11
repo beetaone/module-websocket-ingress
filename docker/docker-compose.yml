@@ -9,6 +9,6 @@ services:
       MODULE_TYPE: "Input"
       EGRESS_URLS: "https://testdockercompose.free.beeceptor.com"
 
-      WEBSOCKET_URL: 'wss://eu5pro.loriot.io/app?token=vgEALgAAABBldTVwcm8ubG9yaW90LmlvTTCGqQVZwa2MmmcOXWziOg=='
+      WEBSOCKET_URL: ''
     ports:
       - 80:80
