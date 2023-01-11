@@ -1,14 +1,15 @@
 const WebSocket = require('ws')
 const fetch = require('node-fetch')
 const { EGRESS_URLS, WEBSOCKET_URL } = require('../config/config.js')
+
 const initializeListener = async () => {
   const client = new WebSocket(WEBSOCKET_URL)
-  client.on('message', function message(data) {
+  client.on('message', async function message(data) {
     console.log(`Received data: ${data}`)
     let decodedData = data
     try {
       decodedData = JSON.parse(data.toString())
-    } catch (SyntaxError) {
+    } catch (e) {
       decodedData = data.toString()
     }
     const payload = {
@@ -18,27 +19,21 @@ const initializeListener = async () => {
     if (EGRESS_URLS) {
       const eUrls = EGRESS_URLS.replace(/ /g, '')
       const urls = eUrls.split(',')
-      urls.forEach(async url => {
-        if (url) {
-          try {
-            console.log(`Sending data to ${url}`)
-            const callRes = await fetch(url, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify(payload),
-            })
-            if (!callRes.ok) {
-              console.error(`Error passing response data to ${url}, status: ${callRes.status}`)
-            } else {
-              console.log(`Data sent successfully.`)
-            }
-          } catch (e) {
+
+      await Promise.all(
+        urls.map(async url =>
+          fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          }).catch(e => {
             console.error(`Error making request to: ${url}, error: ${e.message}`)
-          }
-        }
-      })
+            throw e
+          })
+        )
+      ).catch(e => console.error(e))
+
+      console.log('Data sent to egress')
     } else {
       console.error('EGRESS_URLS is not provided.')
     }
