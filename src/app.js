@@ -1,49 +1,54 @@
-const { INGRESS_HOST, INGRESS_PORT, MODULE_NAME } = require('./config/config.js')
-const express = require('express')
-const app = express()
-const winston = require('winston')
-const expressWinston = require('express-winston')
-const { initializeListener } = require('./utils/websocket')
-// initialization
-app.use(express.urlencoded({ extended: true }))
-app.use(express.json())
+const WebSocket = require('ws')
+const fetch = require('node-fetch')
+const { EGRESS_URLS, WEBSOCKET_URL } = require('./config/config.js')
 
-// logger
-app.use(
-  expressWinston.logger({
-    transports: [
-      new winston.transports.Console(),
-      /*
-    new winston.transports.File({
-        filename: 'logs/websocket-ingress.log'
-    })
-    */
-    ],
-    format: winston.format.combine(winston.format.colorize(), winston.format.json()),
-    meta: true, // optional: control whether you want to log the meta data about the request (default to true)
-    msg: 'HTTP {{req.method}} {{req.url}}', // optional: customize the default logging message. E.g. "{{res.statusCode}} {{req.method}} {{res.responseTime}}ms {{req.url}}"
-    expressFormat: true, // Use the default Express/morgan request formatting. Enabling this will override any msg if true. Will only output colors with colorize set to true
-    colorize: false, // Color the text and status code, using the Express/morgan color palette (text: gray, status: default green, 3XX cyan, 4XX yellow, 5XX red).
-    ignoreRoute: function (req, res) {
-      return false
-    }, // optional: allows to skip some log messages based on request and/or response
-  })
-)
-// handle exceptions
-app.use(async (err, req, res, next) => {
-  if (res.headersSent) {
-    return next(err)
+const client = new WebSocket(WEBSOCKET_URL)
+
+client.on('message', async function message(data) {
+  console.log(`Received data: ${data}`)
+  let decodedData
+  try {
+    decodedData = JSON.parse(data.toString())
+  } catch (e) {
+    decodedData = data.toString()
   }
-  const errCode = err.status || 401
-  res.status(errCode).send({
-    status: false,
-    message: err.message,
-  })
+  const payload = {
+    timestamp: Date.now(),
+    data: decodedData,
+  }
+  if (EGRESS_URLS) {
+    const urls = EGRESS_URLS.replace(/ /g, '').split(',')
+    await Promise.all(
+      urls.map(async url =>
+        fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        }).then(res => {
+          console.log(`Response from ${url}: ${res.status}`)
+        })
+      )
+    )
+      .then(() => {
+        console.log('Data sent to egress')
+      })
+      .catch(e => {
+        console.error(e.message)
+      })
+  } else {
+    console.error('EGRESS_URLS is not provided.')
+  }
 })
 
-if (require.main === module) {
-  app.listen(INGRESS_PORT, INGRESS_HOST, () => {
-    console.log(`${MODULE_NAME} listening on ${INGRESS_PORT}`)
-    initializeListener()
-  })
-}
+client.on('open', () => {
+  // TODO: Add subscriptions to ws ingress
+  console.log('Connection opened')
+})
+
+client.on('close', () => {
+  console.log('Connection closed')
+})
+
+client.on('error', error => {
+  console.error(`An error occurred: ${error.message}`)
+})
