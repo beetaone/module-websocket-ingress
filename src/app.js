@@ -6,7 +6,7 @@ const client = new WebSocket(WEBSOCKET_URL)
 
 client.on('message', async function message(data) {
   console.log(`Received data: ${data}`)
-  let decodedData = data
+  let decodedData
   try {
     decodedData = JSON.parse(data.toString())
   } catch (e) {
@@ -17,12 +17,7 @@ client.on('message', async function message(data) {
     data: decodedData,
   }
   if (EGRESS_URLS) {
-    const eUrls = EGRESS_URLS.replace(/ /g, '')
-    const urls = eUrls.split(',')
-    console.log({
-      urls,
-      eUrls,
-    })
+    const urls = EGRESS_URLS.replace(/ /g, '').split(',')
     await Promise.all(
       urls.map(async url =>
         fetch(url, {
@@ -48,15 +43,12 @@ client.on('message', async function message(data) {
 client.on('open', () => {
   // TODO: Add subscriptions to ws ingress
   console.log('Connection opened')
-  // const subscribeMessage = JSON.stringify({
-  //   event: 'bts:subscribe',
-  //   data: {
-  //     channel: 'live_trades',
-  //   },
-  // })
-  // client.send(subscribeMessage)
 })
 
 client.on('close', () => {
   console.log('Connection closed')
+})
+
+client.on('error', error => {
+  console.error(`An error occurred: ${error.message}`)
 })
