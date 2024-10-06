@@ -4,7 +4,7 @@
 | -------------- | ----------------------------------------------------------------------------------------- |
 | Name           | Websocket Ingress                                                                         |
 | Version        | v1.0.0                                                                                    |
-| Dockerhub Link | [weevenetwork/websocket-ingress](https://hub.docker.com/r/weevenetwork/websocket-ingress) |
+| Dockerhub Link | [beetaone/websocket-ingress](https://hub.docker.com/r/beetaone/websocket-ingress) |
 | Authors        | Mesud Pasic                                                                               |
 
 - [Websocket Ingress](#websocket-ingress)
@@ -12,12 +12,12 @@
   - [Features](#features)
   - [Environment Variables](#environment-variables)
     - [Module Specific](#module-specific)
-    - [Set by the weeve Agent on the edge-node](#set-by-the-weeve-agent-on-the-edge-node)
+    - [Set by the beetaone Agent on the edge-node](#set-by-the-beetaone-agent-on-the-edge-node)
   - [Dependencies](#dependencies)
 
 ## Description
 
-The module should connect to Websocket endpoint and listen for incoming messages. Then forward the payload to next module in weeve appropriate JSON format.
+The module should connect to Websocket endpoint and listen for incoming messages. Then forward the payload to next module in beetaone appropriate JSON format.
 
 ## Environment Variables
 
@@ -27,7 +27,7 @@ The module should connect to Websocket endpoint and listen for incoming messages
 
 ### Module Specific
 
-### Set by the weeve Agent on the edge-node
+### Set by the beetaone Agent on the edge-node
 
 | Environment Variables | type   | Description               |
 | --------------------- | ------ | ------------------------- |
